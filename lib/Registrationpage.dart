@@ -57,7 +57,7 @@ class _VolleyballRegistrationFormState
     }
     if (_ageController.text.isEmpty ||
         int.tryParse(_ageController.text) == null) {
-      _showSnackbar("Please enter a valid age.");
+      _showSnackbar("Please enter a valid address.");
       return false;
     }
     if (_selectedGrade == null) {
