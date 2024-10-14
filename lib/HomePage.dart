@@ -90,13 +90,14 @@ class _MainUIState extends State<MainUI> {
               height: 200,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: const Color.fromARGB(255, 227, 224, 224),
-                   image: DecorationImage(
-      image: AssetImage('lib/assets/google.png'),
-      fit: BoxFit.contain, 
-      // Adjust the fit as needed
-    ),),
+                borderRadius: BorderRadius.circular(20),
+                color: const Color.fromARGB(255, 227, 224, 224),
+                image: DecorationImage(
+                  image: AssetImage('lib/assets/google.png'),
+                  fit: BoxFit.contain,
+                  // Adjust the fit as needed
+                ),
+              ),
               child: Center(
                 child: Container(
                     padding: EdgeInsets.all(10),
@@ -124,11 +125,11 @@ class _MainUIState extends State<MainUI> {
             height: 40,
           ),
           Container(
-              padding: EdgeInsets.only(left: 25, bottom: 10),
+              padding: EdgeInsets.only(left: 15, bottom: 20, right: 15),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
+                  topLeft: Radius.circular(70),
                 ),
               ),
               child: Padding(
@@ -149,8 +150,8 @@ class _MainUIState extends State<MainUI> {
                               return Column(
                                 children: [
                                   Container(
-                                      height: 120,
-                                      width: 120,
+                                      height: 80,
+                                      width: 80,
                                       decoration: BoxDecoration(
                                         color: cateColors[index],
                                         shape: BoxShape.circle,
@@ -163,7 +164,7 @@ class _MainUIState extends State<MainUI> {
                                   ),
                                   Text(cateNames[index],
                                       style: TextStyle(
-                                        fontSize: 22,
+                                        fontSize: 15,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.black.withOpacity(0.8),
                                       ))

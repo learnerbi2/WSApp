@@ -8,44 +8,45 @@ import 'package:womensafetyapp/TextEdit.dart';
 // import 'package:insta_clone/Widgets/text_input_field.dart';
 // import 'package:insta_clone/utils/colors.dart';
 
-const primaryColor = Colors.white;
+const primaryColor = Colors.black;
 
-class VolleyballRegistrationForm extends StatefulWidget {
-  const VolleyballRegistrationForm({Key? key}) : super(key: key);
+class RegistrationForm extends StatefulWidget {
+  const RegistrationForm({Key? key}) : super(key: key);
 
   @override
-  State<VolleyballRegistrationForm> createState() =>
-      _VolleyballRegistrationFormState();
+  State<RegistrationForm> createState() => _RegistrationFormState();
 }
 
-class _VolleyballRegistrationFormState
-    extends State<VolleyballRegistrationForm> {
+class _RegistrationFormState extends State<RegistrationForm> {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _ageController = TextEditingController();
-  final TextEditingController _schoolDistrictController =
-      TextEditingController();
-  final TextEditingController _parentFirstNameController =
-      TextEditingController();
-  final TextEditingController _parentLastNameController =
-      TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _voiceController = TextEditingController();
+  final TextEditingController _countryController = TextEditingController();
+  final TextEditingController _stateController = TextEditingController();
+    final TextEditingController _districtController = TextEditingController();
+
+  // final TextEditingController _parentFirstNameController =
+  //     TextEditingController();
+  // final TextEditingController _parentLastNameController =
+  //     TextEditingController();
   final TextEditingController _emergencyContactController =
       TextEditingController();
 
   String? _selectedGrade;
   String? _selectedShirtSize;
 
-  final List<String> _grades = ['Student', 'Job', 'Home Maker', 'Others'];
-  final List<String> _shirtSizes = ['Male', 'Female', 'Others'];
+  final List<String> _work = ['Student', 'Job', 'Home Maker', 'Others'];
+  final List<String> _gender = ['Male', 'Female', 'Others'];
 
   @override
   void dispose() {
     _firstNameController.dispose();
     _lastNameController.dispose();
-    _ageController.dispose();
-    _schoolDistrictController.dispose();
-    _parentFirstNameController.dispose();
-    _parentLastNameController.dispose();
+    _addressController.dispose();
+    _countryController.dispose();
+    _stateController.dispose();
+    _districtController.dispose();
     _emergencyContactController.dispose();
     super.dispose();
   }
@@ -55,30 +56,32 @@ class _VolleyballRegistrationFormState
       _showSnackbar("Please enter the participant's full name.");
       return false;
     }
-    if (_ageController.text.isEmpty ||
-        int.tryParse(_ageController.text) == null) {
+    if (_addressController.text.isEmpty) {
       _showSnackbar("Please enter a valid address.");
       return false;
     }
     if (_selectedGrade == null) {
-      _showSnackbar("Please select a grade.");
+      _showSnackbar("Please select a profession.");
       return false;
     }
-    if (_schoolDistrictController.text.isEmpty) {
-      _showSnackbar("Please enter the school district.");
+    if (_voiceController.text.isEmpty) {
+      _showSnackbar("Please give her a Name.");
       return false;
     }
-    if (_selectedShirtSize == null) {
-      _showSnackbar("Please select a shirt size.");
+    if (_countryController.text.isEmpty) {
+      _showSnackbar("Please select Country.");
       return false;
     }
-    if (_parentFirstNameController.text.isEmpty ||
-        _parentLastNameController.text.isEmpty) {
-      _showSnackbar("Please enter the parent's full name.");
+    if (_stateController.text.isEmpty) {
+      _showSnackbar("Please select State.");
       return false;
     }
-    if (_emergencyContactController.text.isEmpty) {
-      _showSnackbar("Please enter an emergency contact.");
+    if (_districtController.text.isEmpty) {
+      _showSnackbar("Please select District.");
+      return false;
+    }
+       if (_emergencyContactController.text.isEmpty) {
+      _showSnackbar("Please enter a contact.");
       return false;
     }
     return true;
@@ -100,11 +103,12 @@ class _VolleyballRegistrationFormState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Registration Form",style: TextStyle(color: Colors.white),),
+        title: const Text(
+          "Registration Form",
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Colors.blue,
-        iconTheme: IconThemeData(
-          color: Colors.white),
-        
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -141,15 +145,17 @@ class _VolleyballRegistrationFormState
                 style: TextStyle(color: primaryColor),
               ),
               TextInputField(
-                textEditingController: _ageController,
+                textEditingController: _addressController,
                 hintText: 'Enter Address',
-                textInputType: TextInputType.number,
-                isPass: true,
+                isPass: false,
+                textInputType: TextInputType.streetAddress,
               ),
               const SizedBox(height: 16),
               const Text(
                 "Contact",
-                style: TextStyle(color: primaryColor),
+                style: TextStyle(
+                  color: primaryColor,
+                ),
               ),
               TextInputField(
                 textEditingController: _emergencyContactController,
@@ -158,19 +164,18 @@ class _VolleyballRegistrationFormState
                 isPass: false,
               ),
               const SizedBox(height: 16),
-
               const Text(
-                "",
+                "Profession",
                 style: TextStyle(
                     color: primaryColor, backgroundColor: Colors.white),
               ),
               DropdownButtonFormField<String>(
                 value: _selectedGrade,
-                items: _grades.map((String grade) {
+                items: _work.map((String work) {
                   return DropdownMenuItem<String>(
-                    value: grade,
+                    value: work,
                     child: Text(
-                      grade,
+                      work,
                       style: TextStyle(color: Colors.black),
                     ),
                   );
@@ -181,19 +186,8 @@ class _VolleyballRegistrationFormState
                   });
                 },
                 decoration: const InputDecoration(
-                  hintText: 'Work',
+                  hintText: 'Enter your profession',
                 ),
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                "District",
-                style: TextStyle(color: primaryColor),
-              ),
-              TextInputField(
-                textEditingController: _schoolDistrictController,
-                hintText: 'Enter district',
-                textInputType: TextInputType.text,
-                isPass: true,
               ),
               const SizedBox(height: 16),
               const Text(
@@ -202,10 +196,10 @@ class _VolleyballRegistrationFormState
               ),
               DropdownButtonFormField<String>(
                 value: _selectedShirtSize,
-                items: _shirtSizes.map((String size) {
+                items: _gender.map((String gender) {
                   return DropdownMenuItem<String>(
-                    value: size,
-                    child: Text(size),
+                    value: gender,
+                    child: Text(gender),
                   );
                 }).toList(),
                 onChanged: (newValue) {
@@ -214,35 +208,45 @@ class _VolleyballRegistrationFormState
                   });
                 },
                 decoration: const InputDecoration(
-                  hintText: 'Gender',
+                  hintText: 'Enter your Gender',
                 ),
               ),
               const SizedBox(height: 16),
-              const Text(
-                "State",
-                style: TextStyle(color: primaryColor),
-              ),
               Row(
                 children: [
                   Expanded(
-                    child:CSCPicker(
-                      showStates: true,
-                      showCities:true,
-                      layout: Layout.vertical,
-                      onCountryChanged: (Country){},
-                      onStateChanged: (state){},
-                      onCityChanged: (city){},
-                      stateDropdownLabel: "state",
-                      cityDropdownLabel: "district",
-                      
-                    )
-                  ),
+                      child: CSCPicker(
+                    flagState: CountryFlag.ENABLE,
+                    showStates: true,
+                    showCities: true,
+                    layout: Layout.vertical,
+                    onCountryChanged: (Country) {},
+                    onStateChanged: (state) {},
+                    onCityChanged: (city) {},
+                    stateDropdownLabel: "state",
+                    cityDropdownLabel: "district",
+                  )),
                   const SizedBox(width: 16),
                 ],
               ),
+              SizedBox(
+                height: 20,
+              ),
+              const Text(
+                "Voice Recognizer",
+                style: TextStyle(color: primaryColor),
+              ),
+              TextInputField(
+                textEditingController: _voiceController,
+                hintText: 'Give a Nice Name to me',
+                textInputType: TextInputType.text,
+                isPass: false,
+              ),
               const SizedBox(height: 32),
               ElevatedButton(
-                style:ButtonStyle(backgroundColor:  WidgetStatePropertyAll(Colors.blue),),
+                style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(Colors.blue),
+                ),
                 onPressed: () {
                   _submitForm();
                   Navigator.push(context,
@@ -251,7 +255,8 @@ class _VolleyballRegistrationFormState
                 child: const Text(
                   'Submit',
                   style: TextStyle(
-                      color: primaryColor,),
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ],

@@ -14,6 +14,34 @@ class _LoginPageState extends State<Login> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _keepMeLoggedIn = false;
+  @override
+  void dispose() {
+    _userController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  bool _validateFields() {
+    if (_userController.text.isEmpty) {
+      _showSnackbar("Please enter the user Name.");
+      return false;
+    }
+    if (_emailController.text.isEmpty) {
+      _showSnackbar("Please enter a valid Email Address.");
+      return false;
+    }
+    if (_passwordController.text.isEmpty) {
+      _showSnackbar("Please select a password.");
+      return false;
+    }
+    return true;
+  }
+
+  void _showSnackbar(String message) {
+    final snackBar = SnackBar(content: Text(message));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +110,7 @@ class _LoginPageState extends State<Login> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => VolleyballRegistrationForm()));
+                          builder: (context) => RegistrationForm()));
                 },
                 child: const Text(
                   'Log in',
@@ -111,27 +139,30 @@ class _LoginPageState extends State<Login> {
               child: const Text('Forgot your password?'),
             ),
             const Divider(),
-            Row(
+            Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const SizedBox(height: 10),
                 ElevatedButton.icon(
                   onPressed: () {
                     // Implement login with Google logic here
                   },
                   icon: Image.asset(
                     'lib/assets/google.png', // Replace with your Google logo path
-                    height: 20,
+                    height: 30,
+                    width: 30,
                   ),
                   label: const Text('Continue with Google'),
                 ),
-                const SizedBox(width: 20),
+                const SizedBox(height: 10),
                 ElevatedButton.icon(
                   onPressed: () {
                     // Implement login with Apple logic here
                   },
                   icon: Image.asset(
                     'lib/assets/facebook.png', // Replace with your Apple logo path
-                    height: 20,
+                    height: 30,
+                    width: 30,
                   ),
                   label: const Text('Continue with facebook'),
                 ),
