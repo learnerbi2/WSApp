@@ -13,7 +13,8 @@ class _LoginPageState extends State<Login> {
   final TextEditingController _userController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _keepMeLoggedIn = false;
+  //bool _keepMeLoggedIn = false;
+  final _formKey = GlobalKey<FormState>();
   @override
   void dispose() {
     _userController.dispose();
@@ -22,31 +23,33 @@ class _LoginPageState extends State<Login> {
     super.dispose();
   }
 
-  bool _validateFields() {
-    if (_userController.text.isEmpty) {
-      _showSnackbar("Please enter the user Name.");
-      return false;
-    }
-    if (_emailController.text.isEmpty) {
-      _showSnackbar("Please enter a valid Email Address.");
-      return false;
-    }
-    if (_passwordController.text.isEmpty) {
-      _showSnackbar("Please select a password.");
-      return false;
-    }
-    return true;
-  }
+  // bool _validateFields() {
+  //   if (_userController.text.isEmpty) {
+  //     _showSnackbar("Please enter the user Name.");
+  //     return false;
+  //   }
+  //   if (_emailController.text.isEmpty) {
+  //     _showSnackbar("Please enter a valid Email Address.");
+  //     return false;
+  //   }
+  //   if (_passwordController.text.isEmpty) {
+  //     _showSnackbar("Please select a password.");
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
-  void _showSnackbar(String message) {
-    final snackBar = SnackBar(content: Text(message));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
+  // void _showSnackbar(String message) {
+  //   final snackBar = SnackBar(content: Text(message));
+  //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
+        body: Form(
+      key: _formKey,
+      child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -61,6 +64,12 @@ class _LoginPageState extends State<Login> {
             ),
             const SizedBox(height: 20),
             TextFormField(
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter User Name';
+                }
+                return null;
+              },
               controller: _userController,
               decoration: const InputDecoration(
                 labelText: 'User Name',
@@ -70,6 +79,12 @@ class _LoginPageState extends State<Login> {
               height: 10,
             ),
             TextFormField(
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter Email';
+                }
+                return null;
+              },
               controller: _emailController,
               decoration: const InputDecoration(
                 labelText: 'Email address',
@@ -77,6 +92,12 @@ class _LoginPageState extends State<Login> {
             ),
             const SizedBox(height: 10),
             TextFormField(
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter Your Email';
+                }
+                return null;
+              },
               controller: _passwordController,
               obscureText: true,
               decoration: const InputDecoration(
@@ -85,32 +106,25 @@ class _LoginPageState extends State<Login> {
               ),
             ),
             const SizedBox(height: 10),
-            Row(
-              children: [
-                Checkbox(
-                  value: _keepMeLoggedIn,
-                  onChanged: (value) {
-                    setState(() {
-                      _keepMeLoggedIn = value!;
-                    });
-                  },
-                ),
-                const Text('Keep me logged in'),
-              ],
-            ),
-            const SizedBox(height: 20),
+
+            // login button
             ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor: WidgetStatePropertyAll(Colors.blue),
                 ),
                 onPressed: () {
-                  // Implement login logic here
-                  print('Email: ${_emailController.text}');
-                  print('Password: ${_passwordController.text}');
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => RegistrationForm()));
+                  // // Implement login logic here
+                  if (_formKey.currentState!.validate()) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Processing Data')),
+                    );
+                    print('Email: ${_emailController.text}');
+                    print('Password: ${_passwordController.text}');
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RegistrationForm()));
+                  }
                 },
                 child: const Text(
                   'Log in',
@@ -119,18 +133,18 @@ class _LoginPageState extends State<Login> {
                   ),
                 )),
             const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text("Don't have a ID? "),
-                TextButton(
-                  onPressed: () {
-                    // Implement create account logic here
-                  },
-                  child: const Text('Create account'),
-                ),
-              ],
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     const Text("Don't have a ID? "),
+            //     TextButton(
+            //       onPressed: () {
+            //         // Implement create account logic here
+            //       },
+            //       child: const Text('Create account'),
+            //     ),
+            //   ],
+            // ),
             const SizedBox(height: 10),
             TextButton(
               onPressed: () {
@@ -171,6 +185,6 @@ class _LoginPageState extends State<Login> {
           ],
         ),
       ),
-    );
+    ));
   }
 }
